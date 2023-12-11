@@ -1,3 +1,5 @@
+package main
+
 class GetInput {
     fun inputNum():Int{
 
