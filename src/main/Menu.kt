@@ -27,4 +27,6 @@ class Menu {
             MenuItem("에비플럼", 9000, "자아, 독특함"),
             MenuItem("다육 세트", 12000, "다양성, 인연")
         ))
+
+    var types = listOf(single, bouquet, dayuk)
 }
