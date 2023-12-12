@@ -34,7 +34,7 @@ class Cart {
         else{
             println("\n주문이 완료되었습니다.\n")
             money -= total
-            println("[잔액 : ${money}]")
+            println("[잔액 : ${money}]\n")
             result = 1
         }
         return result

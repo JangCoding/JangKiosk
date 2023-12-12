@@ -12,17 +12,13 @@ fun main() {
     var shopping = true
     while(shopping) // selectType
     {
-        println("[THE SPARTAN GARDEN]")
-        println("원하시는 항목을 골라주세요.\n")
-
         lists.showTypeList(menu.types)
 
         var t = input.inputNum(menu.types.size +2 ) -1 // order, cancel
         when(t){
             // Type 안에 선택을 한 경우
             in 0 until menu.types.size-> {
-                println("\n[ ${menu.types[t].name} 메뉴 ]")
-                lists.showItemList(menu.types[t].items)
+                lists.showItemList(menu.types[t])
                 var i = input.inputNum(menu.types[t].items.size+1) - 1
                 when(i){
                     in 0 until menu.types[t].items.size->{
