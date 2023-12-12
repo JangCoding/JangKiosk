@@ -51,7 +51,7 @@ fun main() {
                         // 주문취소
                         2 -> {
                             myCart.showCart()
-                            println("\n취소할 번호를 입력해주세요.")
+                            println("\n[취소하기]")
                             var dist = myCart.items.toSet().toList() // 중복 제거 후 리스트화
                             var c = input.inputNum(myCart.items.size) - 1
                             when (c) {
@@ -59,7 +59,6 @@ fun main() {
                                     println("\n${dist[c].name}(은)는 취소되었습니다.\n")
                                     myCart.delItem(dist[c])
                                 }
-
                                 else -> println("\n이전 화면으로 돌아갑니다.\n")
                             }
                         }

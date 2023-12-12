@@ -23,11 +23,11 @@ class Cart {
             total += t
             println("%d. %-10s | %3d 개 | %7d원".format(idx+1, name, counts, t))
         }
+        println("\n총 [%7d원] 입니다.".format(total))
     }
 
     fun payment():Int{
         var result = 0
-        println("\n총 [%7d원] 입니다.".format(total))
         if(money < total ) {
             println("잔액이 [${total - money}원] 부족합니다.\n")
         }
