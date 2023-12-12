@@ -8,58 +8,90 @@ fun main() {
     val input = GetInput()
     myCart.money = Random.nextInt(10000,100000)
     var lists = ShowList()
-//    lists.showTypeList(menu.types)
-//    lists.showItemList(menu.single.items)
-//    println("내 소지금 ${myCart.money}")
-
-    println("[THE SPARTAN GARDEN] 에 당도한 것을 환영한다 !!!!")
-    println("아래의 메뉴판을 보고 원하는 바를 고하라 !!!!")
 
     var shopping = true
     while(shopping) // selectType
     {
-        println("[Spartan Garden]")
+        println("[THE SPARTAN GARDEN]")
+        println("원하시는 항목을 골라주세요.\n")
+
         lists.showTypeList(menu.types)
+
         var t = input.inputNum(menu.types.size +2 ) -1 // order, cancel
         when(t){
             // Type 안에 선택을 한 경우
             in 0 until menu.types.size-> {
-                println("[ ${menu.types[t].name} 메뉴 ]")
+                println("\n[ ${menu.types[t].name} 메뉴 ]")
                 lists.showItemList(menu.types[t].items)
                 var i = input.inputNum(menu.types[t].items.size+1) - 1
                 when(i){
                     in 0 until menu.types[t].items.size->{
-                        println("좋은 선택이다 !!!!")
+                        println("\n[${menu.types[t].items[i].name}]를 장바구니에 넣었습니다.\n")
                         myCart.addItem(menu.types[t].items[i])
                     }
-                    else -> println("신중히 살펴보아라 !!!!")
+                    else -> println("\n이전 화면으로 돌아갑니다.\n")
                 }
             }
 
             // order
             menu.types.size -> {
-                myCart.showCart()
-                println("이대로 결제를 진행해드릴까요 ?")
-                println("1. 주문하기")
-                println("2. 주문취소")
-                println("3. 돌아가기")
-                var o = input.inputNum(2)
-                when(o) {
-                    // 주문
-                    1 -> {
-                        var result = myCart.payment()
-                        if(result == 1)
-                            myCart.items = arrayListOf()
-                    }
-                    // 취소
-                    2 -> println("신중히 살펴보아라 !!!!")
+                if(myCart.items.size < 1 ){
+                    println("\n장바구니가 비어있습니다.\n")
                 }
-            }
+                else {
+                    myCart.showCart()
+                    println("\n이대로 결제를 진행해드릴까요 ?")
+                    println("1. 주문하기")
+                    println("2. 주문취소")
+                    println("3. 돌아가기")
+                    var o = input.inputNum(3)
+                    when (o) {
+                        // 주문
+                        1 -> {
+                            var result = myCart.payment()
+                            if (result == 1)
+                                myCart.items = arrayListOf()
+                        }
+                        // 주문취소
+                        2 -> {
+                            myCart.showCart()
+                            println("\n취소할 번호를 입력해주세요.")
+                            var dist = myCart.items.toSet().toList() // 중복 제거 후 리스트화
+                            var c = input.inputNum(myCart.items.size) - 1
+                            when (c) {
+                                in 0 until dist.size -> {
+                                    println("\n${dist[c].name}(은)는 취소되었습니다.\n")
+                                    myCart.delItem(dist[c])
+                                }
+
+                                else -> println("\n이전 화면으로 돌아갑니다.\n")
+                            }
+                        }
+
+                        // 돌아가기
+                        3 -> println( "\n이전 화면으로 돌아갑니다.\n" )
+                    }
+                }
+            } // end order
 
             // cancel
             menu.types.size+1 -> {
-                println("다음에 또 오도록 !!!!")
-                shopping=false
+                if(myCart.items.size <1) {
+                    println("\n다음에 또 오세요 !\n")
+                    shopping = false
+                }
+                else {
+                    println("\n장바구니에 물건이 남아있습니다. 정말 종료할까요?")
+                    println("1. 예")
+                    println("2. 아니오")
+                    var e = input.inputNum(2)
+                    when(e){
+                        1 ->{
+                            println("\n다음에 또 오세요 !\n")
+                            shopping = false
+                        }
+                    }
+                }
             }
         } // when(t)
     } // while(shopping)

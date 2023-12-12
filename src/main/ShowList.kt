@@ -8,7 +8,7 @@ class ShowList {
             println("${i+1}. ${value.name}")
         }
         println("${items.size+1}. 주문하기")
-        println("${items.size+2}. 달아나기")
+        println("${items.size+2}. 종료하기")
     }
 
     fun showItemList(items:List<MenuItem>){
