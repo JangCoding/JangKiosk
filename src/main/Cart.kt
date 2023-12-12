@@ -15,6 +15,7 @@ class Cart {
 
     fun showCart()  {
         total = 0
+        println("-".repeat(44))
         println("\n[ 내 장바구니 ]")
         for((idx,i) in items.toSet().withIndex() ){ // .toSet() 중복되지 않는 리스트로 변경해줌
             var name = i.name
