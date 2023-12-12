@@ -2,6 +2,11 @@ package main
 
 import kotlin.random.Random
 
+// MenuComponent > Menutype > MenuItem
+// name, descript > type     > price
+
+
+
 fun main() {
     var menu = Menu()
     var myCart = Cart()
