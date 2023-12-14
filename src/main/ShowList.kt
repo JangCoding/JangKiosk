@@ -7,7 +7,7 @@ class ShowList {
         println("-".repeat(44))
         println("[THE SPARTAN GARDEN]")
         for((i,value) in items.withIndex()) {
-            println("${i+1}. ${value.t_name}")
+            println("${i+1}. ${"%-10s".format(value.t_name)}| ${value.t_desc}")
         }
         println("\n[Order Menu]")
         println("${items.size+1}. 주문하기")
@@ -18,7 +18,7 @@ class ShowList {
         println("-".repeat(44))
         println("\n[ ${items[0].t_name} 메뉴 ]")
         for((i,value) in items.withIndex()) {
-            println("${i+1}. ${"%-10s".format(value.i_name)} | W ${"%5d".format(value.price)} | 재고 : ${"%3d".format(value.ea)} | ${value.i_desc}")
+            println("${i+1}. ${"%-20s".format(value.i_name)} | W ${"%5d".format(value.price)} | 재고 : ${"%3d".format(value.ea)} | ${value.i_desc}")
         }
         println("${items.size+1}. 뒤로가기")
     }

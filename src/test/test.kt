@@ -1,34 +1,27 @@
 package test
 
-//클래스
-data class MenuItem(val name:String,val price:Int,val description:String){
-}
+//클래스import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-fun init() // 함수
-{
-    var drinks =
-        listOf(
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아")
-        )
-    var burgers =
-        listOf(
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아")
-        )
-    var beers =
-        listOf(
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아"),
-            MenuItem("아이스아메리카노", 5000, "얼죽아")
-        )
-}
+import kotlin.random.Random
+
+import kotlinx.coroutines.*
+import kotlin.concurrent.thread
 
 fun main() {
-    init() // 함수
+    runBlocking {
+        while (true) {
+            var job = launch {
+                println("hi")
+                var a=readLine()
+            }
+
+            job.join()
+
+            for (i in 3 downTo 1) {
+                println("[$i]초")
+                delay(1000)
+            }
+        }
+    }
 }
