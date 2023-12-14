@@ -1,12 +1,18 @@
 package main
 
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 import kotlin.random.Random
 
-const val BANK_HOUR: Int = 14
-const val BANK_MIN_START: Int = 40
-const val BANK_MIN_END: Int = 42
+import kotlinx.coroutines.*
+import kotlin.concurrent.thread
+
+//쓰레드
+
+const val BANK_HOUR: Int = 11
+const val BANK_MIN_START: Int = 10
+const val BANK_MIN_END: Int = 20
 
 // MenuComponent > Menutype > MenuItem
 // name, descript > type     > price
@@ -61,6 +67,16 @@ fun timeCheck():Boolean{
     return true
 }
 
+fun timeFormater(time: LocalDateTime):String{
+
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+    // 포맷에 맞게 출력
+    val formattedTime: String = time.format(formatter)
+
+    return formattedTime
+}
+
 
 fun main() {
     var typeList:List<MenuType> = listOf()
@@ -79,99 +95,128 @@ fun main() {
     val input = GetInput()
     var lists = ShowList()
 
+    var wait:Int=0
+
 
     var shopping = true
-    while(shopping) // selectType
-    {
-        lists.showTypeList(typeList)
 
-        //메뉴 입력받기
-        var t = input.inputNum(typeList.size +2 ) -1 // order, cancel
-        when(t){
-            // Type 안에 선택을 한 경우
-            in 0 until typeList.size-> {
+    runBlocking {       // 코루틴의 스코프 만들기
 
-                lists.showItemList(itemList[t])
-
-                //아이템 입력받기
-                var i = input.inputNum(itemList[t].size+1) - 1
-                when(i){
-                    in 0 until itemList[t].size->{
-                        if(itemList[t][i].ea > 0) {
-                            itemList[t][i].ea -= 1
-                            println("\n[${itemList[t][i].i_name}]를 장바구니에 넣었습니다.\n")
-                            myCart.addItem(itemList[t][i])
-                        }
-                        else
-                            println("죄송합니다. 재고가 부족합니다.")
-                    }
-                    else -> println("\n이전 화면으로 돌아갑니다.\n")
-                }
+        val waitPlus = launch {
+            while (true) {
+               wait += 1
+               delay(3000)
             }
+        }
 
-            // order
-            typeList.size -> {
-                if(myCart.items.size < 1 ){
-                    println("\n장바구니가 비어있습니다.\n")
-                }
-                else {
-                    myCart.showCart()
-                    println("\n이대로 결제를 진행해드릴까요 ?")
-                    println("1. 주문하기")
-                    println("2. 주문취소")
-                    println("3. 돌아가기")
-                    var o = input.inputNum(3)
-                    when (o) {
-                        // 주문
-                        1 -> {
-                            if(timeCheck()==false)
-                            {
-                                println("현재 시각은 오후${LocalDateTime.now().hour}시 ${LocalDateTime.now().minute}분입니다. \n" +
-                                        "은행 점검 시간은 오후${BANK_HOUR}시 ${BANK_MIN_START}분 ~ 오후 ${BANK_HOUR}시 ${BANK_MIN_END}분이므로 결제할 수 없습니다.")
-                            }
-                            else if ( myCart.payment())
-                                myCart.items = arrayListOf()
+        val waitMinus = launch {
+            while (true) {
+                wait -= 1
+                delay(5000)
+            }
+        }
+
+        while (shopping) // selectType
+        {
+            var job = launch{     // 코루틴 내용
+            lists.showTypeList(typeList)
+
+            //메뉴 입력받기
+            var t = input.inputNum(typeList.size + 2) - 1 // order, cancel
+            when (t) {
+                // Type 안에 선택을 한 경우
+                in 0 until typeList.size -> {
+
+                    lists.showItemList(itemList[t])
+
+                    //아이템 입력받기
+                    var i = input.inputNum(itemList[t].size + 1) - 1
+                    when (i) {
+                        in 0 until itemList[t].size -> {
+                            if (itemList[t][i].ea > 0) {
+                                itemList[t][i].ea -= 1
+                                println("\n[${itemList[t][i].i_name}]를 장바구니에 넣었습니다.\n")
+                                myCart.addItem(itemList[t][i])
+                            } else
+                                println("죄송합니다. 재고가 부족합니다.")
                         }
-                        // 주문취소
-                        2 -> {
-                            myCart.showCart()
-                            println("\n[취소하기]")
-                            var dist = myCart.items.toSet().toList() // 중복 제거 후 리스트화
-                            var c = input.inputNum(myCart.items.size) - 1
-                            when (c) {
-                                in 0 until dist.size -> {
-                                    println("\n${dist[c].i_name}(은)는 취소되었습니다.\n")
-                                    myCart.delItem(dist[c])
+
+                        else -> println("\n이전 화면으로 돌아갑니다.\n")
+                    }
+                }
+
+                // order
+                typeList.size -> {
+                    if (myCart.items.size < 1) {
+                        println("\n장바구니가 비어있습니다.\n")
+                    } else {
+                        myCart.showCart()
+                        println("\n이대로 결제를 진행해드릴까요 ? ( 현재 주문 대기 수 : ${wait} )")
+                        println("1. 주문하기")
+                        println("2. 주문취소")
+                        println("3. 돌아가기")
+                        var o = input.inputNum(3)
+                        when (o) {
+                            // 주문
+                            1 -> {
+                                if (timeCheck() == false) {
+                                    println(
+                                        "현재 시각은 오후${LocalDateTime.now().hour}시 ${LocalDateTime.now().minute}분입니다. \n" +
+                                                "은행 점검 시간은 오후${BANK_HOUR}시 ${BANK_MIN_START}분 ~ 오후 ${BANK_HOUR}시 ${BANK_MIN_END}분이므로 결제할 수 없습니다."
+                                    )
+                                } else if (myCart.payment()) {
+                                    myCart.items = arrayListOf()
+                                    println("\n주문이 완료되었습니다. (${timeFormater(LocalDateTime.now())})\n")
                                 }
-                                else -> println("\n이전 화면으로 돌아갑니다.\n")
+                            }
+                            // 주문취소
+                            2 -> {
+                                myCart.showCart()
+                                println("\n[취소하기]")
+                                var dist = myCart.items.toSet().toList() // 중복 제거 후 리스트화
+                                var c = input.inputNum(myCart.items.size) - 1
+                                when (c) {
+                                    in 0 until dist.size -> {
+                                        println("\n${dist[c].i_name}(은)는 취소되었습니다.\n")
+                                        myCart.delItem(dist[c])
+                                    }
+
+                                    else -> println("\n이전 화면으로 돌아갑니다.\n")
+                                }
+                            }
+
+                            // 돌아가기
+                            3 -> println("\n이전 화면으로 돌아갑니다.\n")
+                        }
+                    }
+                } // end order
+
+                // cancel
+                typeList.size + 1 -> {
+                    if (myCart.items.size < 1) {
+                        println("\n다음에 또 오세요 !\n")
+                        shopping = false
+                    } else {
+                        println("\n장바구니에 물건이 남아있습니다. 정말 종료할까요?")
+                        println("1. 예")
+                        println("2. 아니오")
+                        var e = input.inputNum(2)
+                        when (e) {
+                            1 -> {
+                                println("\n다음에 또 오세요 !\n")
+                                shopping = false
                             }
                         }
-
-                        // 돌아가기
-                        3 -> println( "\n이전 화면으로 돌아갑니다.\n" )
                     }
                 }
-            } // end order
+            } // when(t)
+            } // launch
 
-            // cancel
-            typeList.size+1 -> {
-                if(myCart.items.size <1) {
-                    println("\n다음에 또 오세요 !\n")
-                    shopping = false
-                }
-                else {
-                    println("\n장바구니에 물건이 남아있습니다. 정말 종료할까요?")
-                    println("1. 예")
-                    println("2. 아니오")
-                    var e = input.inputNum(2)
-                    when(e){
-                        1 ->{
-                            println("\n다음에 또 오세요 !\n")
-                            shopping = false
-                        }
-                    }
-                }
+            job.join()
+            for (i in 3 downTo 1) {
+                println("[$i]초 후 메인 화면으로 돌아갑니다.")
+                delay(1000)
             }
-        } // when(t)
-    } // while(shopping)
+        } // while(shopping)
+    } //RunBlocking
 } // main

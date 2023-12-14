@@ -36,7 +36,6 @@ class Cart(var _money:Int) {
             println("잔액이 [${total - money}원] 부족합니다.\n")
         }
         else{
-            println("\n주문이 완료되었습니다.\n")
             money -= total
             println("[잔액 : ${money}원]\n")
             result = true
