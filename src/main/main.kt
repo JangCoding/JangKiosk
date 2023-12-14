@@ -24,29 +24,29 @@ fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
     when(t_name) {
         "한 송이 꽃" -> {
             i_list = listOf(
-                MenuItem(t_name, t_desc, "장미", 5000, "사랑, 아름다움, 존경"),
-                MenuItem(t_name, t_desc, "해바라기", 3000, "희망, 햇살, 긍정"),
-                MenuItem(t_name, t_desc, "튤립", 6000, "기쁨, 행복, 사랑의 고백"),
-                MenuItem(t_name, t_desc, "백합", 7000, "순수, 우아함, 감사"),
-                MenuItem(t_name, t_desc, "안개꽃", 4500, "신비로움, 아름다움, 그리움")
+                MenuItem(t_name, t_desc, "장미", 5000, 3, "사랑, 아름다움, 존경"),
+                MenuItem(t_name, t_desc, "해바라기", 3000, 5,  "희망, 햇살, 긍정"),
+                MenuItem(t_name, t_desc, "튤립", 6000, 1, "기쁨, 행복, 사랑의 고백"),
+                MenuItem(t_name, t_desc, "백합", 7000, 2,  "순수, 우아함, 감사"),
+                MenuItem(t_name, t_desc, "안개꽃", 4500, 5, "신비로움, 아름다움, 그리움")
             )
         }
         "꽃 다발" -> {
             i_list = listOf(
-                MenuItem(t_name, t_desc, "로즈 부케", 12000, "사랑의 메시지를 전하며"),
-                MenuItem(t_name, t_desc, "선물용 튤립 부케", 15000, "특별한 날에 어울리는 부케"),
-                MenuItem(t_name, t_desc, "색상감 넘치는 꽃다발", 18000, "다양한 꽃으로 만든 아름다운 부케"),
-                MenuItem(t_name, t_desc, "프리저브드 플라워 부케", 25000, "오래도록 싱그러운 꽃 향을 즐길 수 있는 부케"),
-                MenuItem(t_name, t_desc, "로맨틱한 꽃과 초콜릿 세트", 30000, "로즈와 고급 초콜릿이 어우러진 세련된 부케"),
-                MenuItem(t_name, t_desc, "특별한 날을 위한 프리미엄 부케", 50000, "특별한 순간을 만들어 드리는 고급 부케")
+                MenuItem(t_name, t_desc, "로즈 부케", 12000, 2,"사랑의 메시지를 전하며"),
+                MenuItem(t_name, t_desc, "선물용 튤립 부케", 15000, 3,"특별한 날에 어울리는 부케"),
+                MenuItem(t_name, t_desc, "색상감 넘치는 꽃다발", 18000, 1,"다양한 꽃으로 만든 아름다운 부케"),
+                MenuItem(t_name, t_desc, "프리저브드 플라워 부케", 25000, 5,"오래도록 싱그러운 꽃 향을 즐길 수 있는 부케"),
+                MenuItem(t_name, t_desc, "로맨틱한 꽃과 초콜릿 세트", 30000, 6,"로즈와 고급 초콜릿이 어우러진 세련된 부케"),
+                MenuItem(t_name, t_desc, "특별한 날을 위한 프리미엄 부케", 50000, 4,"특별한 순간을 만들어 드리는 고급 부케")
             )
         }
         "다육이" -> {
             i_list = listOf(
-                MenuItem(t_name, t_desc, "선인장", 8000, "마음의 평화와 안정을 주는 실내 식물"),
-                MenuItem(t_name, t_desc, "다육이 세트", 12000, "다양한 다육이가 함께 모여 있는 다육이 세트"),
-                MenuItem(t_name, t_desc, "애기 선인장", 5000, "작고 귀여운 애기 선인장"),
-                MenuItem(t_name, t_desc, "다육이 케이크", 18000, "화려한 다육이로 만든 케이크 모양의 다육이")
+                MenuItem(t_name, t_desc, "선인장", 8000, 5,"마음의 평화와 안정을 주는 실내 식물"),
+                MenuItem(t_name, t_desc, "다육이 세트", 12000, 2,"다양한 다육이가 함께 모여 있는 다육이 세트"),
+                MenuItem(t_name, t_desc, "애기 선인장", 5000, 16,"작고 귀여운 애기 선인장"),
+                MenuItem(t_name, t_desc, "다육이 케이크", 18000, 3,"화려한 다육이로 만든 케이크 모양의 다육이")
             )
         }
     }
@@ -97,8 +97,13 @@ fun main() {
                 var i = input.inputNum(itemList[t].size+1) - 1
                 when(i){
                     in 0 until itemList[t].size->{
-                        println("\n[${itemList[t][i].i_name}]를 장바구니에 넣었습니다.\n")
-                        myCart.addItem(itemList[t][i])
+                        if(itemList[t][i].ea > 0) {
+                            itemList[t][i].ea -= 1
+                            println("\n[${itemList[t][i].i_name}]를 장바구니에 넣었습니다.\n")
+                            myCart.addItem(itemList[t][i])
+                        }
+                        else
+                            println("죄송합니다. 재고가 부족합니다.")
                     }
                     else -> println("\n이전 화면으로 돌아갑니다.\n")
                 }
