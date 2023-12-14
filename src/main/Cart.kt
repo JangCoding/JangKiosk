@@ -30,8 +30,8 @@ class Cart(var _money:Int) {
         println("\n총 [%7d원] 입니다.".format(total))
     }
 
-    fun payment():Int{
-        var result = 0
+    fun payment():Boolean{
+        var result = false
         if(money < total ) {
             println("잔액이 [${total - money}원] 부족합니다.\n")
         }
@@ -39,7 +39,7 @@ class Cart(var _money:Int) {
             println("\n주문이 완료되었습니다.\n")
             money -= total
             println("[잔액 : ${money}원]\n")
-            result = 1
+            result = true
         }
         return result
     }

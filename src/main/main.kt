@@ -1,6 +1,12 @@
 package main
 
+import java.time.LocalDateTime
+
 import kotlin.random.Random
+
+const val BANK_HOUR: Int = 14
+const val BANK_MIN_START: Int = 40
+const val BANK_MIN_END: Int = 42
 
 // MenuComponent > Menutype > MenuItem
 // name, descript > type     > price
@@ -48,6 +54,13 @@ fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
     return i_list
 }
 
+fun timeCheck():Boolean{
+    var nowTime = LocalDateTime.now()
+    if(nowTime.hour == BANK_HOUR && nowTime.minute in BANK_MIN_START..BANK_MIN_END)
+        return false
+    return true
+}
+
 
 fun main() {
     var typeList:List<MenuType> = listOf()
@@ -72,11 +85,15 @@ fun main() {
     {
         lists.showTypeList(typeList)
 
+        //메뉴 입력받기
         var t = input.inputNum(typeList.size +2 ) -1 // order, cancel
         when(t){
             // Type 안에 선택을 한 경우
             in 0 until typeList.size-> {
+
                 lists.showItemList(itemList[t])
+
+                //아이템 입력받기
                 var i = input.inputNum(itemList[t].size+1) - 1
                 when(i){
                     in 0 until itemList[t].size->{
@@ -102,8 +119,12 @@ fun main() {
                     when (o) {
                         // 주문
                         1 -> {
-                            var result = myCart.payment()
-                            if (result == 1)
+                            if(timeCheck()==false)
+                            {
+                                println("현재 시각은 오후${LocalDateTime.now().hour}시 ${LocalDateTime.now().minute}분입니다. \n" +
+                                        "은행 점검 시간은 오후${BANK_HOUR}시 ${BANK_MIN_START}분 ~ 오후 ${BANK_HOUR}시 ${BANK_MIN_END}분이므로 결제할 수 없습니다.")
+                            }
+                            else if ( myCart.payment())
                                 myCart.items = arrayListOf()
                         }
                         // 주문취소
