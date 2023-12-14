@@ -7,20 +7,20 @@ class ShowList {
         println("-".repeat(44))
         println("[THE SPARTAN GARDEN]")
         for((i,value) in items.withIndex()) {
-            println("${i+1}. ${value.name}")
+            println("${i+1}. ${value.t_name}")
         }
         println("\n[Order Menu]")
         println("${items.size+1}. 주문하기")
         println("${items.size+2}. 종료하기")
     }
 
-    fun showItemList(type:MenuType){
+    fun showItemList(items:List<MenuItem>){
         println("-".repeat(44))
-        println("\n[ ${type.name} 메뉴 ]")
-        for((i,value) in type.items.withIndex()) {
-            println("${i+1}. ${"%-10s".format(value.name)} | W ${"%5d".format(value.price)} | ${value.description}")
+        println("\n[ ${items[0].t_name} 메뉴 ]")
+        for((i,value) in items.withIndex()) {
+            println("${i+1}. ${"%-10s".format(value.i_name)} | W ${"%5d".format(value.price)} | ${value.i_desc}")
         }
-        println("${type.items.size+1}. 뒤로가기")
+        println("${items.size+1}. 뒤로가기")
     }
 
 

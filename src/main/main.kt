@@ -7,16 +7,16 @@ import kotlin.random.Random
 
 fun typeInit():List<MenuType>{
     var t_list:List<MenuType> = listOf(
-        MenuType("Flower", "한 송이 만으로도 마음을 전달하는 데는 충분합니다."),
-        MenuType("Bouquet", "그러면 꽃 다발은 어떻겠어요?"),
-        MenuType("Dayook", "귀여운 다육이")
+        MenuType("한 송이 꽃", "한 송이 만으로도 마음을 전달하는 데는 충분합니다."),
+        MenuType("꽃 다발", "그러면 꽃 다발은 어떻겠어요?"),
+        MenuType("다육이", "귀여운 다육이")
     )
     return t_list
 }
 fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
     var i_list: List<MenuItem> = listOf()
     when(t_name) {
-        "Flower" -> {
+        "한 송이 꽃" -> {
             i_list = listOf(
                 MenuItem(t_name, t_desc, "장미", 5000, "사랑, 아름다움, 존경"),
                 MenuItem(t_name, t_desc, "해바라기", 3000, "희망, 햇살, 긍정"),
@@ -25,7 +25,7 @@ fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
                 MenuItem(t_name, t_desc, "안개꽃", 4500, "신비로움, 아름다움, 그리움")
             )
         }
-        "Bouquet" -> {
+        "꽃 다발" -> {
             i_list = listOf(
                 MenuItem(t_name, t_desc, "로즈 부케", 12000, "사랑의 메시지를 전하며"),
                 MenuItem(t_name, t_desc, "선물용 튤립 부케", 15000, "특별한 날에 어울리는 부케"),
@@ -35,7 +35,7 @@ fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
                 MenuItem(t_name, t_desc, "특별한 날을 위한 프리미엄 부케", 50000, "특별한 순간을 만들어 드리는 고급 부케")
             )
         }
-        "Dayook" -> {
+        "다육이" -> {
             i_list = listOf(
                 MenuItem(t_name, t_desc, "선인장", 8000, "마음의 평화와 안정을 주는 실내 식물"),
                 MenuItem(t_name, t_desc, "다육이 세트", 12000, "다양한 다육이가 함께 모여 있는 다육이 세트"),
@@ -51,43 +51,44 @@ fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
 
 fun main() {
     var typeList:List<MenuType> = listOf()
-    var itemList:List<MenuItem> = listOf()
+    var itemList:MutableList<List<MenuItem>> = mutableListOf()
 
-
-    var myCart = Cart()
-    val input = GetInput()
-    myCart.money = Random.nextInt(10000,100000)
-    var lists = ShowList()
 
     //각 메뉴 초기화
     typeList = typeInit()
     for(t in typeList){
-        itemList += itemInit(t.t_name, t.t_desc)
+        itemList += itemInit(t.t_name, t.t_desc) // 이중리스트 itemList[0].i_name : 장미 ...
     }
+
+
+
+    var myCart = Cart(Random.nextInt(10000,100000))
+    val input = GetInput()
+    var lists = ShowList()
 
 
     var shopping = true
     while(shopping) // selectType
     {
-        lists.showTypeList(menu.types)
+        lists.showTypeList(typeList)
 
-        var t = input.inputNum(menu.types.size +2 ) -1 // order, cancel
+        var t = input.inputNum(typeList.size +2 ) -1 // order, cancel
         when(t){
             // Type 안에 선택을 한 경우
-            in 0 until menu.types.size-> {
-                lists.showItemList(menu.types[t])
-                var i = input.inputNum(menu.types[t].items.size+1) - 1
+            in 0 until typeList.size-> {
+                lists.showItemList(itemList[t])
+                var i = input.inputNum(itemList[t].size+1) - 1
                 when(i){
-                    in 0 until menu.types[t].items.size->{
-                        println("\n[${menu.types[t].items[i].name}]를 장바구니에 넣었습니다.\n")
-                        myCart.addItem(menu.types[t].items[i])
+                    in 0 until itemList[t].size->{
+                        println("\n[${itemList[t][i].i_name}]를 장바구니에 넣었습니다.\n")
+                        myCart.addItem(itemList[t][i])
                     }
                     else -> println("\n이전 화면으로 돌아갑니다.\n")
                 }
             }
 
             // order
-            menu.types.size -> {
+            typeList.size -> {
                 if(myCart.items.size < 1 ){
                     println("\n장바구니가 비어있습니다.\n")
                 }
@@ -113,7 +114,7 @@ fun main() {
                             var c = input.inputNum(myCart.items.size) - 1
                             when (c) {
                                 in 0 until dist.size -> {
-                                    println("\n${dist[c].name}(은)는 취소되었습니다.\n")
+                                    println("\n${dist[c].i_name}(은)는 취소되었습니다.\n")
                                     myCart.delItem(dist[c])
                                 }
                                 else -> println("\n이전 화면으로 돌아갑니다.\n")
@@ -127,7 +128,7 @@ fun main() {
             } // end order
 
             // cancel
-            menu.types.size+1 -> {
+            typeList.size+1 -> {
                 if(myCart.items.size <1) {
                     println("\n다음에 또 오세요 !\n")
                     shopping = false
