@@ -4,7 +4,7 @@ class GetInput {
     fun inputNum(max:Int):Int{
         var n:Int=0
         while(true) {
-            print("숫자 입력 : ")
+            print("원하시는 항목을 숫자로 입력해주세요 : ")
             try {
                 n = readLine()!!.toInt()
             } catch (e: Exception) {
