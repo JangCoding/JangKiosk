@@ -1,4 +1,5 @@
 package main
 
 // 각 메뉴 이름 / 가격 / 설명
-data class MenuItem(val name:String,val price:Int,val description:String)
+class MenuItem(t_name:String, t_desc:String, val i_name:String,val price:Int, var ea:Int, val i_desc:String) : MenuType(t_name, t_desc){
+}
