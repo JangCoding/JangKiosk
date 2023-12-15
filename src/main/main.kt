@@ -16,7 +16,7 @@ const val BANK_MIN_START: Int = 10
 const val BANK_MIN_END: Int = 20
 
 
-var typeList: List<MenuType> = listOf()
+var typeList: List<Menu> = listOf()
 var itemList: MutableList<List<MenuItem>> = mutableListOf()
 
 var myCart = Cart(Random.nextInt(20000, 100000))
@@ -45,7 +45,7 @@ fun inputNum(max:Int):Int{
     return n
 }
 
-fun showTypeList(items:List<MenuType>){
+fun showTypeList(items:List<Menu>){
     println("-".repeat(44))
     println("[THE SPARTAN GARDEN]")
     for((i,value) in items.withIndex()) {
@@ -65,11 +65,11 @@ fun showItemList(items:List<MenuItem>){
     println("${items.size+1}. 뒤로가기")
 }
 
-fun typeInit(): List<MenuType> {
-    var t_list: List<MenuType> = listOf(
-        MenuType("한 송이 꽃", "꽃 한 송이로 전하는 진심"),
-        MenuType("꽃 다발", "꽃 여러 송이로 전하는 더 큰 진심"),
-        MenuType("다육이", "귀여운 다육이")
+fun typeInit(): List<Menu> {
+    var t_list: List<Menu> = listOf(
+        Menu("한 송이 꽃", "꽃 한 송이로 전하는 진심"),
+        Menu("꽃 다발", "꽃 여러 송이로 전하는 더 큰 진심"),
+        Menu("다육이", "귀여운 다육이")
     )
     return t_list
 }

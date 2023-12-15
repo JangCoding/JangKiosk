@@ -3,7 +3,7 @@ package main
 class ShowList {
 
     //리스트 출력
-    fun showTypeList(items:List<MenuType>){
+    fun showTypeList(items:List<Menu>){
         println("-".repeat(44))
         println("[THE SPARTAN GARDEN]")
         for((i,value) in items.withIndex()) {
