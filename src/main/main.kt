@@ -44,8 +44,6 @@ fun inputNum(max:Int):Int{
     }
     return n
 }
-
-
 //함수 오버로딩
 fun showList(items:List<Menu>){
     println("-".repeat(44))
@@ -232,18 +230,13 @@ fun main() {
     for (t in typeList) {
         itemList += itemInit(t.name, t.desc) // 이중리스트 itemList[0].i_name : 장미 ...
     }
-
     showWaits()
-
     var shopping = true
-
     runBlocking {       // 코루틴의 스코프 만들기
 
-        while (shopping) // selectType
-        {
+        while (shopping){ // selectType
             var job = launch {     // 코루틴 내용
                 showList(typeList)
-
                 //메뉴 입력받기
                 var t = inputNum(typeList.size + 2) - 1 // order, cancel
                 when (t) {
