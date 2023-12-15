@@ -45,7 +45,9 @@ fun inputNum(max:Int):Int{
     return n
 }
 
-fun showTypeList(items:List<Menu>){
+
+//함수 오버로딩
+fun showList(items:List<Menu>){
     println("-".repeat(44))
     println("[THE SPARTAN GARDEN]")
     for((i,value) in items.withIndex()) {
@@ -56,7 +58,7 @@ fun showTypeList(items:List<Menu>){
     println("${items.size+2}. 종료하기")
 }
 
-fun showItemList(items:List<MenuItem>){
+fun showList(items:List<MenuItem>){
     println("-".repeat(44))
     println("\n[ ${items[0].name} 메뉴 ]")
     for((i,value) in items.withIndex()) {
@@ -112,7 +114,7 @@ fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
 }
 
 fun selectItem(t: Int) {
-    showItemList(itemList[t])
+    showList(itemList[t])
 
     //아이템 입력받기
     var i = inputNum(itemList[t].size + 1) - 1
@@ -240,7 +242,7 @@ fun main() {
         while (shopping) // selectType
         {
             var job = launch {     // 코루틴 내용
-                showTypeList(typeList)
+                showList(typeList)
 
                 //메뉴 입력받기
                 var t = inputNum(typeList.size + 2) - 1 // order, cancel
