@@ -1,5 +1,13 @@
 package main
 
-open class MenuType(val t_name:String, val t_desc:String) : Menu() {
+open class MenuType( name:String, desc:String) : Menu() {
+    var name:String
+    var desc:String
+    init{
+        this.name = name
+        this.desc = desc
+    }
+    override fun showInfo(){
 
+    }
 }

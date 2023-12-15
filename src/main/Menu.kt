@@ -1,6 +1,8 @@
 package main
 
 open class Menu() {
+    open fun showInfo(){ }
+
 }
 
 
