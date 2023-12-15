@@ -16,7 +16,7 @@ const val BANK_MIN_START: Int = 10
 const val BANK_MIN_END: Int = 20
 
 
-var typeList: List<MenuType> = listOf()
+var typeList: List<Menu> = listOf()
 var itemList: MutableList<List<MenuItem>> = mutableListOf()
 
 var myCart = Cart(Random.nextInt(20000, 100000))
@@ -44,32 +44,32 @@ fun inputNum(max:Int):Int{
     }
     return n
 }
-
-fun showTypeList(items:List<MenuType>){
+//함수 오버로딩
+fun showList(items:List<Menu>){
     println("-".repeat(44))
     println("[THE SPARTAN GARDEN]")
     for((i,value) in items.withIndex()) {
-        println("${i+1}. ${"%-10s".format(value.t_name)}| ${value.t_desc}")
+        println("${i+1}. ${"%-10s".format(value.name)}| ${value.desc}")
     }
     println("\n[Order Menu]")
     println("${items.size+1}. 주문하기")
     println("${items.size+2}. 종료하기")
 }
 
-fun showItemList(items:List<MenuItem>){
+fun showList(items:List<MenuItem>){
     println("-".repeat(44))
-    println("\n[ ${items[0].t_name} 메뉴 ]")
+    println("\n[ ${items[0].name} 메뉴 ]")
     for((i,value) in items.withIndex()) {
-        println("${i+1}. ${"%-20s".format(value.i_name)} | W ${"%5d".format(value.price)} | 재고 : ${"%3d".format(value.ea)} | ${value.i_desc}")
+        println("${i+1}. ${"%-20s".format(value.name)} | W ${"%5d".format(value.price)} | 재고 : ${"%3d".format(value.ea)} | ${value.name}")
     }
     println("${items.size+1}. 뒤로가기")
 }
 
-fun typeInit(): List<MenuType> {
-    var t_list: List<MenuType> = listOf(
-        MenuType("한 송이 꽃", "꽃 한 송이로 전하는 진심"),
-        MenuType("꽃 다발", "꽃 여러 송이로 전하는 더 큰 진심"),
-        MenuType("다육이", "귀여운 다육이")
+fun typeInit(): List<Menu> {
+    var t_list: List<Menu> = listOf(
+        Menu("한 송이 꽃", "꽃 한 송이로 전하는 진심"),
+        Menu("꽃 다발", "꽃 여러 송이로 전하는 더 큰 진심"),
+        Menu("다육이", "귀여운 다육이")
     )
     return t_list
 }
@@ -79,31 +79,31 @@ fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
     when (t_name) {
         "한 송이 꽃" -> {
             i_list = listOf(
-                MenuItem(t_name, t_desc, "장미", 5000, 3, "사랑, 아름다움, 존경"),
-                MenuItem(t_name, t_desc, "해바라기", 3000, 5, "희망, 햇살, 긍정"),
-                MenuItem(t_name, t_desc, "튤립", 6000, 1, "기쁨, 행복, 사랑의 고백"),
-                MenuItem(t_name, t_desc, "백합", 7000, 2, "순수, 우아함, 감사"),
-                MenuItem(t_name, t_desc, "안개꽃", 4500, 5, "신비로움, 아름다움, 그리움")
+                MenuItem("장미", 5000, 3, "사랑, 아름다움, 존경"),
+                MenuItem("해바라기", 3000, 5, "희망, 햇살, 긍정"),
+                MenuItem( "튤립", 6000, 1, "기쁨, 행복, 사랑의 고백"),
+                MenuItem( "백합", 7000, 2, "순수, 우아함, 감사"),
+                MenuItem( "안개꽃", 4500, 5, "신비로움, 아름다움, 그리움")
             )
         }
 
         "꽃 다발" -> {
             i_list = listOf(
-                MenuItem(t_name, t_desc, "로즈 부케", 12000, 2, "사랑의 메시지를 전하며"),
-                MenuItem(t_name, t_desc, "선물용 부케", 15000, 3, "특별한 날에 어울리는 부케"),
-                MenuItem(t_name, t_desc, "계절 꽃 부케", 18000, 1, "다양한 꽃으로 만든 아름다운 부케"),
-                MenuItem(t_name, t_desc, "프리저브드 플라워 부케", 25000, 5, "오래도록 싱그러운 꽃 향을 즐길 수 있는 부케"),
-                MenuItem(t_name, t_desc, "로맨틱한 꽃과 초콜릿 세트", 30000, 6, "로즈와 고급 초콜릿이 어우러진 세련된 부케"),
-                MenuItem(t_name, t_desc, "특별한 날을 위한 프리미엄 부케", 50000, 4, "특별한 순간을 만들어 드리는 고급 부케")
+                MenuItem("로즈 부케", 12000, 2, "사랑의 메시지를 전하며"),
+                MenuItem("선물용 부케", 15000, 3, "특별한 날에 어울리는 부케"),
+                MenuItem("계절 꽃 부케", 18000, 1, "다양한 꽃으로 만든 아름다운 부케"),
+                MenuItem("프리저브드 플라워 부케", 25000, 5, "오래도록 싱그러운 꽃 향을 즐길 수 있는 부케"),
+                MenuItem("로맨틱한 꽃과 초콜릿 세트", 30000, 6, "로즈와 고급 초콜릿이 어우러진 세련된 부케"),
+                MenuItem("특별한 날을 위한 프리미엄 부케", 50000, 4, "특별한 순간을 만들어 드리는 고급 부케")
             )
         }
 
         "다육이" -> {
             i_list = listOf(
-                MenuItem(t_name, t_desc, "선인장", 8000, 5, "마음의 평화와 안정을 주는 실내 식물"),
-                MenuItem(t_name, t_desc, "다육이 세트", 12000, 2, "다양한 다육이가 함께 모여 있는 다육이 세트"),
-                MenuItem(t_name, t_desc, "애기 선인장", 5000, 16, "작고 귀여운 애기 선인장"),
-                MenuItem(t_name, t_desc, "다육이 케이크", 18000, 3, "화려한 다육이로 만든 케이크 모양의 다육이")
+                MenuItem("선인장", 8000, 5, "마음의 평화와 안정을 주는 실내 식물"),
+                MenuItem("다육이 세트", 12000, 2, "다양한 다육이가 함께 모여 있는 다육이 세트"),
+                MenuItem("애기 선인장", 5000, 16, "작고 귀여운 애기 선인장"),
+                MenuItem("다육이 케이크", 18000, 3, "화려한 다육이로 만든 케이크 모양의 다육이")
             )
         }
     }
@@ -112,7 +112,7 @@ fun itemInit(t_name: String, t_desc: String): List<MenuItem> {
 }
 
 fun selectItem(t: Int) {
-    showItemList(itemList[t])
+    showList(itemList[t])
 
     //아이템 입력받기
     var i = inputNum(itemList[t].size + 1) - 1
@@ -120,7 +120,7 @@ fun selectItem(t: Int) {
         in 0 until itemList[t].size -> {
             if (itemList[t][i].ea > 0) {
                 itemList[t][i].ea -= 1
-                println("\n[${itemList[t][i].i_name}]를 장바구니에 넣었습니다.\n")
+                println("\n[${itemList[t][i].name}]를 장바구니에 넣었습니다.\n")
                 myCart.addItem(itemList[t][i])
             } else
                 println("죄송합니다. 재고가 부족합니다.")
@@ -180,7 +180,7 @@ fun confirmOrder() {
                 var c = inputNum(myCart.items.size) - 1
                 when (c) {
                     in 0 until dist.size -> {
-                        println("\n${dist[c].i_name}(은)는 취소되었습니다.\n")
+                        println("\n${dist[c].name}(은)는 취소되었습니다.\n")
                         myCart.delItem(dist[c])
                     }
 
@@ -228,20 +228,15 @@ fun main() {
     //각 메뉴 초기화
     typeList = typeInit()
     for (t in typeList) {
-        itemList += itemInit(t.t_name, t.t_desc) // 이중리스트 itemList[0].i_name : 장미 ...
+        itemList += itemInit(t.name, t.desc) // 이중리스트 itemList[0].i_name : 장미 ...
     }
-
     showWaits()
-
     var shopping = true
-
     runBlocking {       // 코루틴의 스코프 만들기
 
-        while (shopping) // selectType
-        {
+        while (shopping){ // selectType
             var job = launch {     // 코루틴 내용
-                showTypeList(typeList)
-
+                showList(typeList)
                 //메뉴 입력받기
                 var t = inputNum(typeList.size + 2) - 1 // order, cancel
                 when (t) {

@@ -21,8 +21,8 @@ class Cart(var _money:Int) {
         println("-".repeat(44))
         println("\n[ 내 장바구니 ]")
         for((idx,i) in items.toSet().withIndex() ){ // .toSet() 중복되지 않는 리스트로 변경해줌
-            var name = i.i_name
-            var counts = items.count{it.i_name==i.i_name}
+            var name = i.name
+            var counts = items.count{it.name==i.name}
             var t = i.price * counts
             total += t
             println("%d. %-10s | %3d 개 | %7d원".format(idx+1, name, counts, t))
